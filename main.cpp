@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 
 #include "src/category.h"
@@ -35,6 +36,15 @@ int get_int(std::string prompt) {
     std::cin >> line;
     std::cin.ignore();
     return line;
+}
+
+double get_double(const std::string prompt) {
+    std::string line;
+    double value;
+    std::cout << prompt;
+    std::getline(std::cin, line);
+    std::stringstream(line) >> value;
+    return value;
 }
 
 void menu() {
@@ -96,7 +106,7 @@ int main() {
             case 1: {
                 // Capture product data
                 std::string name = get_string("Name: ");
-                double price = (double)get_int("Price: ");
+                double price = get_double("Price: ");
                 int availableQuantity = get_int("Available Quantity: ");
                 int supplierID = get_int("Supplier ID: ");
                 int capacity = get_int("Capacity: ");
