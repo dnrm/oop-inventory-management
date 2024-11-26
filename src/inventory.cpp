@@ -10,7 +10,7 @@ std::vector<Category*> Inventory::getAllCategories() { return categories; }
 
 std::vector<Supplier*> Inventory::getAllSuppliers() { return suppliers; }
 
-Product Inventory::getProduct(int productID) {
+Product& Inventory::getProduct(int productID) {
     for (auto product : products) {
         if (product->getProductID() == productID) {
             return *product;
@@ -38,8 +38,8 @@ Supplier Inventory::getSupplier(int supplierID) {
 }
 
 // Methods
-void Inventory::addProduct(Product product) {
-    products.push_back(new Product(product));
+void Inventory::addProduct(Product* product) {
+    products.push_back(product);
 }
 
 void Inventory::addCategory(Category category) {
