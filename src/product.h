@@ -37,4 +37,34 @@ class Product {
     void orderMoreStock(int quantity);
 };
 
+class CoffeeBag : public Product {
+   private:
+    double weight;
+    std::string grindType;
+
+   public:
+    // Constructor
+    CoffeeBag(std::string name, double price, int availableQuantity,
+              Supplier* supplier, int capacity, Category* category,
+              int productID, double weight, std::string grindType);
+
+    // Getters
+    double getWeight();
+    std::string getGrindType();
+};
+
+class Cup : public Product {
+   private:
+    std::string material;
+
+   public:
+    // Constructor
+    Cup(std::string name, double price, int availableQuantity,
+        Supplier* supplier, int capacity, Category* category, int productID,
+        std::string material);
+
+    // Getters
+    std::string getMaterial();
+};
+
 #endif  // PRODUCT_H

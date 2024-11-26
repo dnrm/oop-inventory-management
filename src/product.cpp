@@ -31,3 +31,26 @@ int Product::getProductID() { return productID; }
 void Product::registerPurchase(int quantity) { availableQuantity -= quantity; }
 
 void Product::orderMoreStock(int quantity) { availableQuantity += quantity; }
+
+// Coffee Bag
+CoffeeBag::CoffeeBag(std::string name, double price, int availableQuantity,
+                     Supplier* supplier, int capacity, Category* category,
+                     int productID, double weight, std::string grindType)
+    : Product(name, price, availableQuantity, supplier, capacity, category,
+              productID),
+      weight(weight),
+      grindType(grindType) {}
+
+double CoffeeBag::getWeight() { return weight; }
+
+std::string CoffeeBag::getGrindType() { return grindType; }
+
+// Cup
+Cup::Cup(std::string name, double price, int availableQuantity,
+         Supplier* supplier, int capacity, Category* category, int productID,
+         std::string material)
+    : Product(name, price, availableQuantity, supplier, capacity, category,
+              productID),
+      material(material) {}
+
+std::string Cup::getMaterial() { return material; }
