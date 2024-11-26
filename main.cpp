@@ -90,7 +90,7 @@ int main() {
         int option = get_int("Option: ");
 
         // Clear screen
-        std::cout << "\033[2J\033[1;1H";
+        // std::cout << "\033[2J\033[1;1H";
 
         switch (option) {
             case 1: {
@@ -107,9 +107,9 @@ int main() {
                 Category category = inventory.getCategory(categoryID);
 
                 // Create the product and add it to the inventory
-                Product product =
-                    Product(name, price, availableQuantity, &supplier, capacity,
-                            &category, inventory.getAllProducts().size() + 1);
+                Product* product = new Product(
+                    name, price, availableQuantity, &supplier, capacity,
+                    &category, inventory.getAllProducts().size() + 1);
                 inventory.addProduct(product);
                 break;
             }
@@ -190,8 +190,9 @@ int main() {
 
                 // Reduce the stock of the product by the quantity specified
                 // (this is done in the product class)
-                Product product = inventory.getProduct(productID);
+                Product& product = inventory.getProduct(productID);
                 product.registerPurchase(quantity);
+                std::cout << "Purchase registered" << std::endl;
                 break;
             }
             case 11: {
@@ -201,7 +202,7 @@ int main() {
 
                 // Increase the stock of the product by the quantity specified
                 // (this is also done in the product class)
-                Product product = inventory.getProduct(productID);
+                Product& product = inventory.getProduct(productID);
                 product.orderMoreStock(quantity);
                 break;
             }
