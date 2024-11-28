@@ -139,7 +139,10 @@ int main() {
         while (true) {
             viewMenu();
             int option = get_int("Option: ");
-            if (option == 0) break;
+            if (option == 0) {
+                std::cout << "\033[2J\033[1;1H";
+                break;
+            }
             auto it = viewActions.find(option);
             if (it != viewActions.end()) {
                 it->second();
@@ -153,7 +156,10 @@ int main() {
         while (true) {
             addMenu();
             int option = get_int("Option: ");
-            if (option == 0) break;
+            if (option == 0) {
+                std::cout << "\033[2J\033[1;1H";
+                break;
+            }
             auto it = addActions.find(option);
             if (it != addActions.end()) {
                 it->second();
@@ -167,7 +173,10 @@ int main() {
         while (true) {
             deleteMenu();
             int option = get_int("Option: ");
-            if (option == 0) break;
+            if (option == 0) {
+                std::cout << "\033[2J\033[1;1H";
+                break;
+            }
             auto it = deleteActions.find(option);
             if (it != deleteActions.end()) {
                 it->second();
@@ -181,7 +190,10 @@ int main() {
         while (true) {
             stockManagementMenu();
             int option = get_int("Option: ");
-            if (option == 0) break;
+            if (option == 0) {
+                std::cout << "\033[2J\033[1;1H";
+                break;
+            }
             auto it = stockManagementActions.find(option);
             if (it != stockManagementActions.end()) {
                 it->second();
@@ -192,9 +204,13 @@ int main() {
     };
 
     // Add actions to the view menu map
-    viewActions[1] = [&]() { printProducts(inventory.getAllProducts()); };
+    viewActions[1] = [&]() {
+        std::cout << "\033[2J\033[1;1H";
+        printProducts(inventory.getAllProducts());
+    };
 
     viewActions[2] = [&]() {
+        std::cout << "\033[2J\033[1;1H";
         printf("\n========== Categories ==========\n\n");
         for (Category* category : inventory.getAllCategories()) {
             std::cout << category->getName()
@@ -205,6 +221,7 @@ int main() {
     };
 
     viewActions[3] = [&]() {
+        std::cout << "\033[2J\033[1;1H";
         printf("\n========== Suppliers ==========\n\n");
         for (Supplier* supplier : inventory.getAllSuppliers()) {
             std::cout << supplier->getName()
@@ -255,22 +272,26 @@ int main() {
 
     // Add actions to the delete menu map
     deleteActions[1] = [&]() {
+        std::cout << "\033[2J\033[1;1H";
         int productID = get_int("Product ID: ");
         inventory.removeProduct(productID);
     };
 
     deleteActions[2] = [&]() {
+        std::cout << "\033[2J\033[1;1H";
         int categoryID = get_int("Category ID: ");
         inventory.removeCategory(categoryID);
     };
 
     deleteActions[3] = [&]() {
+        std::cout << "\033[2J\033[1;1H";
         int supplierID = get_int("Supplier ID: ");
         inventory.removeSupplier(supplierID);
     };
 
     // Add actions to the stock management menu map
     stockManagementActions[1] = [&]() {
+        std::cout << "\033[2J\033[1;1H";
         int productID = get_int("Product ID: ");
         int quantity = get_int("Quantity: ");
 
@@ -284,6 +305,7 @@ int main() {
     };
 
     stockManagementActions[2] = [&]() {
+        std::cout << "\033[2J\033[1;1H";
         int productID = get_int("Product ID: ");
         int quantity = get_int("Quantity: ");
 
