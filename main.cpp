@@ -1,12 +1,14 @@
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
+#include <map>
+#include <functional>
+#include <sstream>
 
 #include "src/category.h"
-#include "src/inventory.h"
 #include "src/product.h"
 #include "src/supplier.h"
+#include "src/inventory.h"
 
 void printProducts(std::vector<Product*> products) {
     printf("\n========== Products ==========\n\n");
@@ -21,24 +23,63 @@ void printProducts(std::vector<Product*> products) {
     printf("\n==============================\n");
 }
 
-// * Read a string from the user (made to avoid code repetition and to make it
-// more concise and readable)
-std::string get_string(std::string prompt) {
+void mainMenu() {
+    printf("\n========== Menu ==============\n\n");
+    printf("1. View\n");
+    printf("2. Add\n");
+    printf("3. Delete\n");
+    printf("4. Stock Management\n");
+    printf("\n");
+    printf("0. Exit\n");
+    printf("\n==============================\n");
+}
+
+void addMenu() {
+    printf("\n========== Add ==============\n\n");
+    printf("1. Add Product\n");
+    printf("2. Add Category\n");
+    printf("3. Add Supplier\n");
+    printf("\n");
+    printf("0. Back\n");
+    printf("\n==============================\n");
+}
+
+void deleteMenu() {
+    printf("\n========== Delete ==============\n\n");
+    printf("1. Delete Product\n");
+    printf("2. Delete Category\n");
+    printf("3. Delete Supplier\n");
+    printf("\n");
+    printf("0. Back\n");
+    printf("\n==============================\n");
+}
+
+void stockManagementMenu() {
+    printf("\n========== Stock Management ==============\n\n");
+    printf("1. Register purchase\n");
+    printf("2. Order more stock\n");
+    printf("\n");
+    printf("0. Back\n");
+    printf("\n==============================\n");
+}
+
+std::string get_string(const std::string& prompt) {
     std::string line;
     std::cout << prompt;
     std::getline(std::cin, line);
     return line;
 }
-// * Same thing as get_string but for integers
-int get_int(std::string prompt) {
-    int line;
+
+int get_int(const std::string& prompt) {
+    std::string line;
+    int value;
     std::cout << prompt;
-    std::cin >> line;
-    std::cin.ignore();
-    return line;
+    std::getline(std::cin, line);
+    std::stringstream(line) >> value;
+    return value;
 }
 
-double get_double(const std::string prompt) {
+double get_double(const std::string& prompt) {
     std::string line;
     double value;
     std::cout << prompt;
@@ -47,183 +88,179 @@ double get_double(const std::string prompt) {
     return value;
 }
 
-void menu() {
-    printf("\n========== Menu ==============\n\n");
-    printf("1. Add Product\n");
-    printf("2. Add Category\n");
-    printf("3. Add Supplier\n");
-    printf("4. Remove Product\n");
-    printf("5. Remove Category\n");
-    printf("6. Remove Supplier\n");
-    printf("\n");
-    printf("7. List Products\n");
-    printf("8. List Categories\n");
-    printf("9. List Suppliers\n");
-    printf("\n");
-    printf("10. Register purchase\n");
-    printf("11. Order more stock\n");
-    printf("\n");
-    printf("12. Exit\n");
-    printf("\n==============================\n");
-}
-
 int main() {
-    // * Instanciate an Inventory class
-    Inventory inventory = Inventory();
+    // Instantiate an Inventory class
+    Inventory inventory;
 
-    // * Add default suppliers and categories
+    // Default categories and suppliers
+    // This is done so that the coffee shop can get straight away to adding their products :)
 
-    // * Suppliers
-    Supplier* supplier1 =
-        new Supplier("Five Elephant", "123456789", "Schwedter Straße", 1);
-    Supplier* supplier2 =
-        new Supplier("The Barn", "987654321", "Schönhauser Allee", 2);
-    Supplier* supplier3 =
-        new Supplier("Bonanza Coffee", "123456789", "Adalbertstraße", 3);
+    Category* category1 = new Category("Coffee Bags", "Bags of whole bean or ground coffee.", 1);
+    Category* category2 = new Category("Machines", "Coffee machines for brewing coffee.", 2);
+    Category* category3 = new Category("Cups", "Beautiful drinkware for the best coffee.", 3);
 
-    // * Categories
-    Category* category1 = new Category("Coffee", "Coffee beans", 1);
-    Category* category2 = new Category("Tea", "Tea leaves", 2);
-    Category* category3 = new Category("Chocolate", "Chocolate bars", 3);
-
-    // * Add the suppliers and categories to the inventory
-    inventory.addSupplier(supplier1);
-    inventory.addSupplier(supplier2);
-    inventory.addSupplier(supplier3);
+    Supplier* supplier1 = new Supplier("Five Elephant Coffee", "1234567890", "Schwedter Straße", 1);
+    Supplier* supplier2 = new Supplier("The Barn", "0987654321", "Schönhauser Allee", 2);
+    Supplier* supplier3 = new Supplier("Bonanza Coffee", "1234567890", "Adalbertstraße", 3);
 
     inventory.addCategory(category1);
     inventory.addCategory(category2);
     inventory.addCategory(category3);
 
-    while (true) {
-        menu();
-        int option = get_int("Option: ");
+    inventory.addSupplier(supplier1);
+    inventory.addSupplier(supplier2);
+    inventory.addSupplier(supplier3);
 
-        // Clear screen
-        // std::cout << "\033[2J\033[1;1H";
+    // Define a map to store menu options and corresponding actions
+    std::map<int, std::function<void()>> mainActions;
+    std::map<int, std::function<void()>> addActions;
+    std::map<int, std::function<void()>> deleteActions;
+    std::map<int, std::function<void()>> stockManagementActions;
 
-        switch (option) {
-            case 1: {
-                // Capture product data
-                std::string name = get_string("Name: ");
-                double price = get_double("Price: ");
-                int availableQuantity = get_int("Available Quantity: ");
-                int supplierID = get_int("Supplier ID: ");
-                int capacity = get_int("Capacity: ");
-                int categoryID = get_int("Category ID: ");
+    // Add actions to the main menu map
+    mainActions[1] = [&]() {
+        printProducts(inventory.getAllProducts());
+    };
 
-                // Get the supplier and category from the provided IDs
-                Supplier supplier = inventory.getSupplier(supplierID);
-                Category category = inventory.getCategory(categoryID);
-
-                // Create the product and add it to the inventory
-                Product* product = new Product(
-                    name, price, availableQuantity, &supplier, capacity,
-                    &category, inventory.getAllProducts().size() + 1);
-                inventory.addProduct(product);
-                break;
-            }
-            case 2: {
-                // Capture category data
-                std::string name = get_string("Name: ");
-                std::string description = get_string("Description: ");
-                int categoryID = get_int("Category ID: ");
-
-                // Create and insert the category
-                Category* category =
-                    new Category(name, description, categoryID);
-                inventory.addCategory(category);
-                break;
-            }
-            case 3: {
-                // Capture supplier data
-                std::string name = get_string("Name: ");
-                std::string contact = get_string("Contact: ");
-                std::string address = get_string("Address: ");
-                int supplierID = get_int("Supplier ID: ");
-
-                // Create and insert the supplier
-                Supplier* supplier =
-                    new Supplier(name, contact, address, supplierID);
-                inventory.addSupplier(supplier);
-                break;
-            }
-            case 4: {
-                // Capture the product ID and remove it from the inventory
-                int productID = get_int("Product ID: ");
-                inventory.removeProduct(productID);
-                break;
-            }
-            case 5: {
-                // Capture the category ID and remove it from the inventory
-                int categoryID = get_int("Category ID: ");
-                inventory.removeCategory(categoryID);
-                break;
-            }
-            case 6: {
-                // Capture the supplier ID and remove it from the inventory
-                int supplierID = get_int("Supplier ID: ");
-                inventory.removeSupplier(supplierID);
-                break;
-            }
-            case 7: {
-                // Self explanatory lol
-                printProducts(inventory.getAllProducts());
-                break;
-            }
-            case 8: {
-                printf("\n========== Categories ==========\n\n");
-                for (Category* category : inventory.getAllCategories()) {
-                    std::cout << category->getName()
-                              << "\tDescription: " << category->getDescription()
-                              << "\tID: " << category->getCategoryID()
-                              << std::endl;
-                }
-                printf("\n==============================\n");
-                break;
-            }
-            case 9: {
-                printf("\n========== Suppliers ==========\n\n");
-                for (Supplier* supplier : inventory.getAllSuppliers()) {
-                    std::cout << supplier->getName()
-                              << "\tContact: " << supplier->getContact()
-                              << "\tAddress: " << supplier->getAddress()
-                              << "\tID: " << supplier->getSupplierID()
-                              << std::endl;
-                }
-                printf("\n==============================\n");
-                break;
-            }
-            case 10: {
-                // Get the product and register a purchase
-                int productID = get_int("Product ID: ");
-                int quantity = get_int("Quantity: ");
-
-                // Reduce the stock of the product by the quantity specified
-                // (this is done in the product class)
-                Product& product = inventory.getProduct(productID);
-                product.registerPurchase(quantity);
-                std::cout << "Purchase registered" << std::endl;
-                break;
-            }
-            case 11: {
-                // Get the product and order more stock
-                int productID = get_int("Product ID: ");
-                int quantity = get_int("Quantity: ");
-
-                // Increase the stock of the product by the quantity specified
-                // (this is also done in the product class)
-                Product& product = inventory.getProduct(productID);
-                product.orderMoreStock(quantity);
-                break;
-            }
-            case 12: {
-                return 0;
-            }
-            default: {
-                std::cout << "Invalid option" << std::endl;
-                break;
+    mainActions[2] = [&]() {
+        while (true) {
+            addMenu();
+            int option = get_int("Option: ");
+            if (option == 0) break;
+            auto it = addActions.find(option);
+            if (it != addActions.end()) {
+                it->second();
+            } else {
+                std::cout << "Invalid option. Please try again." << std::endl;
             }
         }
+    };
+
+    mainActions[3] = [&]() {
+        while (true) {
+            deleteMenu();
+            int option = get_int("Option: ");
+            if (option == 0) break;
+            auto it = deleteActions.find(option);
+            if (it != deleteActions.end()) {
+                it->second();
+            } else {
+                std::cout << "Invalid option. Please try again." << std::endl;
+            }
+        }
+    };
+
+    mainActions[4] = [&]() {
+        while (true) {
+            stockManagementMenu();
+            int option = get_int("Option: ");
+            if (option == 0) break;
+            auto it = stockManagementActions.find(option);
+            if (it != stockManagementActions.end()) {
+                it->second();
+            } else {
+                std::cout << "Invalid option. Please try again." << std::endl;
+            }
+        }
+    };
+
+    // Add actions to the add menu map
+    addActions[1] = [&]() {
+        std::string name = get_string("Name: ");
+        double price = get_double("Price: ");
+        int availableQuantity = get_int("Available Quantity: ");
+        int supplierID = get_int("Supplier ID: ");
+        int categoryID = get_int("Category ID: ");
+
+        // Add the product to the inventory
+        Supplier* supplier = &inventory.getSupplier(supplierID);
+        Category* category = &inventory.getCategory(categoryID);
+        Product* product = new Product(name, price, availableQuantity, supplier, category, inventory.getAllProducts().size() + 1);
+        inventory.addProduct(product);
+    };
+
+    addActions[2] = [&]() {
+        std::string name = get_string("Name: ");
+        std::string description = get_string("Description: ");
+        int categoryID = get_int("Category ID: ");
+
+        // Create and insert the category
+        Category* category = new Category(name, description, categoryID);
+        inventory.addCategory(category);
+    };
+
+    addActions[3] = [&]() {
+        std::string name = get_string("Name: ");
+        std::string contact = get_string("Contact: ");
+        std::string address = get_string("Address: ");
+        int supplierID = get_int("Supplier ID: ");
+
+        // Create and insert the supplier
+        Supplier* supplier = new Supplier(name, contact, address, supplierID);
+        inventory.addSupplier(supplier);
+    };
+
+    // Add actions to the delete menu map
+    deleteActions[1] = [&]() {
+        int productID = get_int("Product ID: ");
+        inventory.removeProduct(productID);
+    };
+
+    deleteActions[2] = [&]() {
+        int categoryID = get_int("Category ID: ");
+        inventory.removeCategory(categoryID);
+    };
+
+    deleteActions[3] = [&]() {
+        int supplierID = get_int("Supplier ID: ");
+        inventory.removeSupplier(supplierID);
+    };
+
+    // Add actions to the stock management menu map
+    stockManagementActions[1] = [&]() {
+        int productID = get_int("Product ID: ");
+        int quantity = get_int("Quantity: ");
+
+        try {
+            Product& product = inventory.getProduct(productID);
+            product.registerPurchase(quantity);
+            std::cout << "Purchase registered successfully." << std::endl;
+        } catch (const std::runtime_error& e) {
+            std::cout << e.what() << std::endl;
+        }
+    };
+
+    stockManagementActions[2] = [&]() {
+        int productID = get_int("Product ID: ");
+        int quantity = get_int("Quantity: ");
+
+        try {
+            Product& product = inventory.getProduct(productID);
+            product.orderMoreStock(quantity);
+            std::cout << "Stock ordered successfully." << std::endl;
+        } catch (const std::runtime_error& e) {
+            std::cout << e.what() << std::endl;
+        }
+    };
+
+    while (true) {
+        mainMenu();
+        int option = get_int("Select an option: ");
+
+        if (option == 0) {
+            break;
+        }
+
+        // Clear the screen
+        std::cout << "\033[2J\033[1;1H";
+
+        auto it = mainActions.find(option);
+        if (it != mainActions.end()) {
+            it->second();
+        } else {
+            std::cout << "Invalid option. Please try again." << std::endl;
+        }
     }
+
+    return 0;
 }
