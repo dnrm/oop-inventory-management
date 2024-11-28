@@ -92,5 +92,10 @@ void testRemoveSupplier() {
 
 int main() {
     testAddProduct();
+    testAddCategory();
+    testAddSupplier();
+    testRemoveProduct();
+    testRemoveCategory();
+    testRemoveSupplier();
     return 0;
 }
