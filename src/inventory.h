@@ -27,13 +27,13 @@ class Inventory {
     std::vector<Supplier*> getAllSuppliers();
 
     Product& getProduct(int productID);
-    Category getCategory(int categoryID);
-    Supplier getSupplier(int supplierID);
+    Category& getCategory(int categoryID);
+    Supplier& getSupplier(int supplierID);
 
     // Methods
     void addProduct(Product* product);
-    void addCategory(Category category);
-    void addSupplier(Supplier supplier);
+    void addCategory(Category* category);
+    void addSupplier(Supplier* supplier);
 
     void removeProduct(int productID);
     void removeCategory(int categoryID);

@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include "src/category.h"
@@ -74,17 +74,17 @@ int main() {
     // * Add default suppliers and categories
 
     // * Suppliers
-    Supplier supplier1 =
-        Supplier("Five Elephant", "123456789", "Schwedter Straße", 1);
-    Supplier supplier2 =
-        Supplier("The Barn", "987654321", "Schönhauser Allee", 2);
-    Supplier supplier3 =
-        Supplier("Bonanza Coffee", "123456789", "Adalbertstraße", 3);
+    Supplier* supplier1 =
+        new Supplier("Five Elephant", "123456789", "Schwedter Straße", 1);
+    Supplier* supplier2 =
+        new Supplier("The Barn", "987654321", "Schönhauser Allee", 2);
+    Supplier* supplier3 =
+        new Supplier("Bonanza Coffee", "123456789", "Adalbertstraße", 3);
 
     // * Categories
-    Category category1 = Category("Coffee", "Coffee beans", 1);
-    Category category2 = Category("Tea", "Tea leaves", 2);
-    Category category3 = Category("Chocolate", "Chocolate bars", 3);
+    Category* category1 = new Category("Coffee", "Coffee beans", 1);
+    Category* category2 = new Category("Tea", "Tea leaves", 2);
+    Category* category3 = new Category("Chocolate", "Chocolate bars", 3);
 
     // * Add the suppliers and categories to the inventory
     inventory.addSupplier(supplier1);
@@ -130,7 +130,8 @@ int main() {
                 int categoryID = get_int("Category ID: ");
 
                 // Create and insert the category
-                Category category = Category(name, description, categoryID);
+                Category* category =
+                    new Category(name, description, categoryID);
                 inventory.addCategory(category);
                 break;
             }
@@ -142,8 +143,8 @@ int main() {
                 int supplierID = get_int("Supplier ID: ");
 
                 // Create and insert the supplier
-                Supplier supplier =
-                    Supplier(name, contact, address, supplierID);
+                Supplier* supplier =
+                    new Supplier(name, contact, address, supplierID);
                 inventory.addSupplier(supplier);
                 break;
             }
