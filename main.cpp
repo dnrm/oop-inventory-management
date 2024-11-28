@@ -17,7 +17,6 @@ void printProducts(std::vector<Product*> products) {
                   << "\tQuantity: " << product->getAvailableQuantity()
                   << "\tSupplier: " << product->getSupplier()->getName()
                   << "\tCategory: " << product->getCategory()->getName()
-                  << "\tCapacity: " << product->getCapacity()
                   << "\tID: " << product->getProductID() << std::endl;
     }
     printf("\n==============================\n");
@@ -31,6 +30,16 @@ void mainMenu() {
     printf("4. Stock Management\n");
     printf("\n");
     printf("0. Exit\n");
+    printf("\n==============================\n");
+}
+
+void viewMenu() {
+    printf("\n========== View ==============\n\n");
+    printf("1. Products\n");
+    printf("2. Categories\n");
+    printf("3. Suppliers\n");
+    printf("\n");
+    printf("0. Back\n");
     printf("\n==============================\n");
 }
 
@@ -113,13 +122,24 @@ int main() {
 
     // Define a map to store menu options and corresponding actions
     std::map<int, std::function<void()>> mainActions;
+    std::map<int, std::function<void()>> viewActions;
     std::map<int, std::function<void()>> addActions;
     std::map<int, std::function<void()>> deleteActions;
     std::map<int, std::function<void()>> stockManagementActions;
 
     // Add actions to the main menu map
     mainActions[1] = [&]() {
-        printProducts(inventory.getAllProducts());
+        while (true) {
+            viewMenu();
+            int option = get_int("Option: ");
+            if (option == 0) break;
+            auto it = viewActions.find(option);
+            if (it != viewActions.end()) {
+                it->second();
+            } else {
+                std::cout << "Invalid option. Please try again." << std::endl;
+            }
+        }
     };
 
     mainActions[2] = [&]() {
@@ -162,6 +182,29 @@ int main() {
                 std::cout << "Invalid option. Please try again." << std::endl;
             }
         }
+    };
+
+    // Add actions to the view menu map
+    viewActions[1] = [&]() {
+        printProducts(inventory.getAllProducts());
+    };
+
+    viewActions[2] = [&]() {
+        printf("\n========== Categories ==========\n\n");
+        for (Category* category : inventory.getAllCategories()) {
+            std::cout << category->getName() << "\tDescription: " << category->getDescription()
+                      << "\tID: " << category->getCategoryID() << std::endl;
+        }
+        printf("\n==============================\n");
+    };
+
+    viewActions[3] = [&]() {
+        printf("\n========== Suppliers ==========\n\n");
+        for (Supplier* supplier : inventory.getAllSuppliers()) {
+            std::cout << supplier->getName() << "\tContact: " << supplier->getContact()
+                      << "\tAddress: " << supplier->getAddress() << "\tID: " << supplier->getSupplierID() << std::endl;
+        }
+        printf("\n==============================\n");
     };
 
     // Add actions to the add menu map

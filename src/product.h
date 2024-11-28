@@ -26,7 +26,6 @@ class Product {
     double getPrice();
     int getAvailableQuantity();
     Supplier* getSupplier();
-    int getCapacity();
     Category* getCategory();
     int getProductID();
 
