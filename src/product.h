@@ -13,22 +13,19 @@ class Product {
     double price;
     int availableQuantity;
     Supplier* supplier;
-    int capacity;
     Category* category;
     int productID;
 
    public:
     // Constructor
     Product(std::string name, double price, int availableQuantity,
-            Supplier* supplier, int capacity, Category* category,
-            int productID);
+            Supplier* supplier, Category* category, int productID);
 
     // Getters
     std::string getName();
     double getPrice();
     int getAvailableQuantity();
     Supplier* getSupplier();
-    int getCapacity();
     Category* getCategory();
     int getProductID();
 
