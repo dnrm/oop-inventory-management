@@ -234,11 +234,24 @@ int main() {
 
     // Add actions to the add menu map
     addActions[1] = [&]() {
+        // Get product data 
         std::string name = get_string("Name: ");
         double price = get_double("Price: ");
         int availableQuantity = get_int("Available Quantity: ");
+
+        // Ask for supplier ID and verify it exists
         int supplierID = get_int("Supplier ID: ");
+        if (inventory.getAllSuppliers().size() < supplierID) {
+            std::cout << "Supplier not found." << std::endl;
+            return;
+        }
+
+        // Ask for category ID and verify it exists
         int categoryID = get_int("Category ID: ");
+        if (inventory.getAllCategories().size() < categoryID) {
+            std::cout << "Category not found." << std::endl;
+            return;
+        }
 
         // Add the product to the inventory
         Supplier* supplier = &inventory.getSupplier(supplierID);
