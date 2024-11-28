@@ -25,6 +25,7 @@ $(TARGET): $(OBJ)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# This is the test target @githubbbbb!!!!
 # Compile and run tests
 test: $(TEST_OBJ) src/category.o src/inventory.o src/product.o src/supplier.o
 	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $(TEST_OBJ) src/category.o src/inventory.o src/product.o src/supplier.o $(LDFLAGS)
