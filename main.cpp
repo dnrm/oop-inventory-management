@@ -1,14 +1,14 @@
+#include <functional>
 #include <iostream>
+#include <map>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <map>
-#include <functional>
-#include <sstream>
 
 #include "src/category.h"
+#include "src/inventory.h"
 #include "src/product.h"
 #include "src/supplier.h"
-#include "src/inventory.h"
 
 void printProducts(std::vector<Product*> products) {
     printf("\n========== Products ==========\n\n");
@@ -102,15 +102,22 @@ int main() {
     Inventory inventory;
 
     // Default categories and suppliers
-    // This is done so that the coffee shop can get straight away to adding their products :)
+    // This is done so that the coffee shop can get straight away to adding
+    // their products :)
 
-    Category* category1 = new Category("Coffee Bags", "Bags of whole bean or ground coffee.", 1);
-    Category* category2 = new Category("Machines", "Coffee machines for brewing coffee.", 2);
-    Category* category3 = new Category("Cups", "Beautiful drinkware for the best coffee.", 3);
+    Category* category1 =
+        new Category("Coffee Bags", "Bags of whole bean or ground coffee.", 1);
+    Category* category2 =
+        new Category("Machines", "Coffee machines for brewing coffee.", 2);
+    Category* category3 =
+        new Category("Cups", "Beautiful drinkware for the best coffee.", 3);
 
-    Supplier* supplier1 = new Supplier("Five Elephant Coffee", "1234567890", "Schwedter Straße", 1);
-    Supplier* supplier2 = new Supplier("The Barn", "0987654321", "Schönhauser Allee", 2);
-    Supplier* supplier3 = new Supplier("Bonanza Coffee", "1234567890", "Adalbertstraße", 3);
+    Supplier* supplier1 = new Supplier("Five Elephant Coffee", "1234567890",
+                                       "Schwedter Straße", 1);
+    Supplier* supplier2 =
+        new Supplier("The Barn", "0987654321", "Schönhauser Allee", 2);
+    Supplier* supplier3 =
+        new Supplier("Bonanza Coffee", "1234567890", "Adalbertstraße", 3);
 
     inventory.addCategory(category1);
     inventory.addCategory(category2);
@@ -185,14 +192,13 @@ int main() {
     };
 
     // Add actions to the view menu map
-    viewActions[1] = [&]() {
-        printProducts(inventory.getAllProducts());
-    };
+    viewActions[1] = [&]() { printProducts(inventory.getAllProducts()); };
 
     viewActions[2] = [&]() {
         printf("\n========== Categories ==========\n\n");
         for (Category* category : inventory.getAllCategories()) {
-            std::cout << category->getName() << "\tDescription: " << category->getDescription()
+            std::cout << category->getName()
+                      << "\tDescription: " << category->getDescription()
                       << "\tID: " << category->getCategoryID() << std::endl;
         }
         printf("\n==============================\n");
@@ -201,8 +207,10 @@ int main() {
     viewActions[3] = [&]() {
         printf("\n========== Suppliers ==========\n\n");
         for (Supplier* supplier : inventory.getAllSuppliers()) {
-            std::cout << supplier->getName() << "\tContact: " << supplier->getContact()
-                      << "\tAddress: " << supplier->getAddress() << "\tID: " << supplier->getSupplierID() << std::endl;
+            std::cout << supplier->getName()
+                      << "\tContact: " << supplier->getContact()
+                      << "\tAddress: " << supplier->getAddress()
+                      << "\tID: " << supplier->getSupplierID() << std::endl;
         }
         printf("\n==============================\n");
     };
@@ -218,7 +226,9 @@ int main() {
         // Add the product to the inventory
         Supplier* supplier = &inventory.getSupplier(supplierID);
         Category* category = &inventory.getCategory(categoryID);
-        Product* product = new Product(name, price, availableQuantity, supplier, category, inventory.getAllProducts().size() + 1);
+        Product* product =
+            new Product(name, price, availableQuantity, supplier, category,
+                        inventory.getAllProducts().size() + 1);
         inventory.addProduct(product);
     };
 

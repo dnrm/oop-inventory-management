@@ -11,6 +11,11 @@ SRC = main.cpp src/category.cpp src/inventory.cpp src/product.cpp src/supplier.c
 OBJ = $(SRC:.cpp=.o)
 TARGET = main
 
+# Test source files
+TEST_SRC = test.cpp
+TEST_OBJ = $(TEST_SRC:.cpp=.o)
+TEST_TARGET = test
+
 all: $(TARGET)
 
 # Compile all .cpp files
@@ -20,6 +25,11 @@ $(TARGET): $(OBJ)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Compile and run tests
+test: $(TEST_OBJ) src/category.o src/inventory.o src/product.o src/supplier.o
+	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $(TEST_OBJ) src/category.o src/inventory.o src/product.o src/supplier.o $(LDFLAGS)
+	./$(TEST_TARGET)
+
 # Remove all the .o files 
 clean:
-	rm -f $(OBJ) $(TARGET) src/*.o
+	rm -f $(OBJ) $(TARGET) $(TEST_OBJ) $(TEST_TARGET)
