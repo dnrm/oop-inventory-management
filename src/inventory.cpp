@@ -19,7 +19,7 @@ Product& Inventory::getProduct(int productID) {
     throw std::runtime_error("Product not found");
 }
 
-Category Inventory::getCategory(int categoryID) {
+Category& Inventory::getCategory(int categoryID) {
     for (auto category : categories) {
         if (category->getCategoryID() == categoryID) {
             return *category;
@@ -28,7 +28,7 @@ Category Inventory::getCategory(int categoryID) {
     throw std::runtime_error("Category not found");
 }
 
-Supplier Inventory::getSupplier(int supplierID) {
+Supplier& Inventory::getSupplier(int supplierID) {
     for (auto supplier : suppliers) {
         if (supplier->getSupplierID() == supplierID) {
             return *supplier;
@@ -42,12 +42,12 @@ void Inventory::addProduct(Product* product) {
     products.push_back(product);
 }
 
-void Inventory::addCategory(Category category) {
-    categories.push_back(new Category(category));
+void Inventory::addCategory(Category* category) {
+    categories.push_back(category);
 }
 
-void Inventory::addSupplier(Supplier supplier) {
-    suppliers.push_back(new Supplier(supplier));
+void Inventory::addSupplier(Supplier* supplier) {
+    suppliers.push_back(supplier);
 }
 
 void Inventory::removeProduct(int productID) {
