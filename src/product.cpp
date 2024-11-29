@@ -2,8 +2,7 @@
 
 // Constructor
 Product::Product(std::string name, double price, int availableQuantity,
-                 Supplier* supplier, Category* category,
-                 int productID)
+                 Supplier* supplier, Category* category, int productID)
     : name(name),
       price(price),
       availableQuantity(availableQuantity),
@@ -26,9 +25,25 @@ int Product::getProductID() { return productID; }
 
 // Actions
 void Product::registerPurchase(int quantity) {
-    std::cout << "Registering purchase. " << std::endl;
-    availableQuantity -= quantity;
-    std::cout << "New quantity: " << availableQuantity << std::endl;
+    std::cout << "Registering purchase..." << std::endl;
+
+    if (quantity > availableQuantity) {
+        std::cout << "would you like to order " << quantity - availableQuantity
+                  << " more? (y/n): ";
+        std::string answer;
+        std::getline(std::cin, answer);
+
+        if (answer == "y") {
+            orderMoreStock(quantity - availableQuantity);
+            std::cout << "\nPurchase successful." << std::endl;
+            availableQuantity -= quantity;
+        } else {
+            std::cout << "\nPurchase cancelled." << std::endl;
+        }
+    } else {
+        std::cout << "\nPurchase successful." << std::endl;
+        availableQuantity -= quantity;
+    }
 }
 
 void Product::orderMoreStock(int quantity) { availableQuantity += quantity; }
@@ -37,8 +52,7 @@ void Product::orderMoreStock(int quantity) { availableQuantity += quantity; }
 CoffeeBag::CoffeeBag(std::string name, double price, int availableQuantity,
                      Supplier* supplier, int capacity, Category* category,
                      int productID, double weight, std::string grindType)
-    : Product(name, price, availableQuantity, supplier, category,
-              productID),
+    : Product(name, price, availableQuantity, supplier, category, productID),
       weight(weight),
       grindType(grindType) {}
 
@@ -50,8 +64,7 @@ std::string CoffeeBag::getGrindType() { return grindType; }
 Cup::Cup(std::string name, double price, int availableQuantity,
          Supplier* supplier, int capacity, Category* category, int productID,
          std::string material)
-    : Product(name, price, availableQuantity, supplier, category,
-              productID),
+    : Product(name, price, availableQuantity, supplier, category, productID),
       material(material) {}
 
 std::string Cup::getMaterial() { return material; }
