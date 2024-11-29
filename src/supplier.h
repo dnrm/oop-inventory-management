@@ -12,12 +12,14 @@ class Supplier {
     int supplierID;
 
    public:
-    Supplier(std::string name, std::string contact, std::string address, int supplierID);
+    Supplier(std::string name, std::string contact, std::string address);
     // Getters
     std::string getName();
     std::string getContact();
     std::string getAddress();
     int getSupplierID();
+    // Setters
+    void setSupplierID(int supplierID);
 };
 
 #endif

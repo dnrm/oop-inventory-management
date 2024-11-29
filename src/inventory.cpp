@@ -42,12 +42,14 @@ void Inventory::addProduct(Product* product) {
     products.push_back(product);
 }
 
-void Inventory::addCategory(Category* category) {
-    categories.push_back(category);
+void Inventory::addSupplier(Supplier* supplier) {
+    supplier->setSupplierID(suppliers.size() + 1);
+    suppliers.push_back(supplier);
 }
 
-void Inventory::addSupplier(Supplier* supplier) {
-    suppliers.push_back(supplier);
+void Inventory::addCategory(Category* category) {
+    category->setCategoryID(categories.size() + 1);
+    categories.push_back(category);
 }
 
 void Inventory::removeProduct(int productID) {

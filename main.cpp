@@ -106,18 +106,18 @@ int main() {
     // their products :)
 
     Category* category1 =
-        new Category("Coffee Bags", "Bags of whole bean or ground coffee.", 1);
+        new Category("Coffee Bags", "Bags of whole bean or ground coffee.");
     Category* category2 =
-        new Category("Machines", "Coffee machines for brewing coffee.", 2);
+        new Category("Machines", "Coffee machines for brewing coffee.");
     Category* category3 =
-        new Category("Cups", "Beautiful drinkware for the best coffee.", 3);
+        new Category("Cups", "Beautiful drinkware for the best coffee.");
 
     Supplier* supplier1 = new Supplier("Five Elephant Coffee", "1234567890",
-                                       "Schwedter Straße", 1);
+                                       "Schwedter Straße");
     Supplier* supplier2 =
-        new Supplier("The Barn", "0987654321", "Schönhauser Allee", 2);
+        new Supplier("The Barn", "0987654321", "Schönhauser Allee");
     Supplier* supplier3 =
-        new Supplier("Bonanza Coffee", "1234567890", "Adalbertstraße", 3);
+        new Supplier("Bonanza Coffee", "1234567890", "Adalbertstraße");
 
     inventory.addCategory(category1);
     inventory.addCategory(category2);
@@ -252,10 +252,9 @@ int main() {
     addActions[2] = [&]() {
         std::string name = get_string("Name: ");
         std::string description = get_string("Description: ");
-        int categoryID = get_int("Category ID: ");
 
         // Create and insert the category
-        Category* category = new Category(name, description, categoryID);
+        Category* category = new Category(name, description);
         inventory.addCategory(category);
     };
 
@@ -263,10 +262,9 @@ int main() {
         std::string name = get_string("Name: ");
         std::string contact = get_string("Contact: ");
         std::string address = get_string("Address: ");
-        int supplierID = get_int("Supplier ID: ");
 
         // Create and insert the supplier
-        Supplier* supplier = new Supplier(name, contact, address, supplierID);
+        Supplier* supplier = new Supplier(name, contact, address);
         inventory.addSupplier(supplier);
     };
 

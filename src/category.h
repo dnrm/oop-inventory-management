@@ -12,18 +12,15 @@ class Category {
     std::string name;
     std::string description;
     int categoryID;
-    std::vector<Product*> products;
 
    public:
     // Constructor
-    Category(std::string name, std::string description, int categoryID);
+    Category(std::string name, std::string description);
     // Getters
     std::string getName();
     std::string getDescription();
     int getCategoryID();
-    std::vector<Product*> getProducts();
-    // Methods
-    void addProduct(Product* product);
+    void setCategoryID(int id);
 };
 
 #endif
