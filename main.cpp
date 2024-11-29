@@ -13,11 +13,7 @@
 void printProducts(std::vector<Product*> products) {
     printf("\n========== Products ==========\n\n");
     for (Product* product : products) {
-        std::cout << product->getName() << "\tPrice: $" << product->getPrice()
-                  << "\tQuantity: " << product->getAvailableQuantity()
-                  << "\tSupplier: " << product->getSupplier()->getName()
-                  << "\tCategory: " << product->getCategory()->getName()
-                  << "\tID: " << product->getProductID() << std::endl;
+        product->displayDetails();
     }
     printf("\n==============================\n");
 }
@@ -253,12 +249,29 @@ int main() {
             return;
         }
 
-        // Add the product to the inventory
+        // Ask for the product type to decide which class to use.
+        std::string productType = get_string("Product Type (CoffeeBag, Machine, Cup): ");
+
+        // Add the product to the inventory based on the type
         Supplier* supplier = &inventory.getSupplier(supplierID);
         Category* category = &inventory.getCategory(categoryID);
-        Product* product =
-            new Product(name, price, availableQuantity, supplier, category,
-                        inventory.getAllProducts().size() + 1);
+        Product* product = nullptr;
+
+        if (productType == "CoffeeBag") {
+            double weight = get_double("Weight: ");
+            std::string grindType = get_string("Grind Type: ");
+            product = new CoffeeBag(name, price, availableQuantity, supplier, category, inventory.getAllProducts().size() + 1, weight, grindType);
+        } else if (productType == "Machine") {
+            std::string type = get_string("Machine Type: ");
+            product = new Machine(name, price, availableQuantity, supplier, category, inventory.getAllProducts().size() + 1, type);
+        } else if (productType == "Cup") {
+            std::string material = get_string("Material: ");
+            product = new Cup(name, price, availableQuantity, supplier, category, inventory.getAllProducts().size() + 1, material);
+        } else {
+            std::cout << "Invalid product type." << std::endl;
+            return;
+        }
+
         inventory.addProduct(product);
     };
 

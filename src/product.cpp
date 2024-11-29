@@ -1,5 +1,7 @@
 #include "product.h"
 
+#include "category.h"
+
 // Constructor
 Product::Product(std::string name, double price, int availableQuantity,
                  Supplier* supplier, Category* category, int productID)
@@ -50,8 +52,8 @@ void Product::orderMoreStock(int quantity) { availableQuantity += quantity; }
 
 // Coffee Bag
 CoffeeBag::CoffeeBag(std::string name, double price, int availableQuantity,
-                     Supplier* supplier, int capacity, Category* category,
-                     int productID, double weight, std::string grindType)
+                     Supplier* supplier, Category* category, int productID,
+                     double weight, std::string grindType)
     : Product(name, price, availableQuantity, supplier, category, productID),
       weight(weight),
       grindType(grindType) {}
@@ -60,11 +62,45 @@ double CoffeeBag::getWeight() { return weight; }
 
 std::string CoffeeBag::getGrindType() { return grindType; }
 
+void CoffeeBag::displayDetails() {
+    std::cout << name << "\tPrice: $" << price
+              << "\tQuantity: " << availableQuantity
+              << "\tSupplier: " << supplier->getName()
+              << "\tCategory: " << category->getName() << "\tID: " << productID
+              << "\tWeight: " << weight << "\tGrind Type: " << grindType
+              << std::endl;
+}
+
 // Cup
 Cup::Cup(std::string name, double price, int availableQuantity,
-         Supplier* supplier, int capacity, Category* category, int productID,
+         Supplier* supplier, Category* category, int productID,
          std::string material)
     : Product(name, price, availableQuantity, supplier, category, productID),
       material(material) {}
 
 std::string Cup::getMaterial() { return material; }
+
+void Cup::displayDetails() {
+    std::cout << name << "\tPrice: $" << price
+              << "\tQuantity: " << availableQuantity
+              << "\tSupplier: " << supplier->getName()
+              << "\tCategory: " << category->getName() << "\tID: " << productID
+              << "\tMaterial: " << material << std::endl;
+}
+
+// Machine
+Machine::Machine(std::string name, double price, int availableQuantity,
+                 Supplier* supplier, Category* category, int productID,
+                 std::string type)
+    : Product(name, price, availableQuantity, supplier, category, productID),
+      type(type) {}
+
+std::string Machine::getType() { return type; }
+
+void Machine::displayDetails() {
+    std::cout << name << "\tPrice: $" << price
+              << "\tQuantity: " << availableQuantity
+              << "\tSupplier: " << supplier->getName()
+              << "\tCategory: " << category->getName() << "\tID: " << productID
+              << "\tType: " << type << std::endl;
+}

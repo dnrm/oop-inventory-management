@@ -32,6 +32,7 @@ class Product {
     // Actions
     void registerPurchase(int quantity);
     void orderMoreStock(int quantity);
+    virtual void displayDetails() = 0;
 };
 
 class CoffeeBag : public Product {
@@ -42,12 +43,15 @@ class CoffeeBag : public Product {
    public:
     // Constructor
     CoffeeBag(std::string name, double price, int availableQuantity,
-              Supplier* supplier, int capacity, Category* category,
+              Supplier* supplier, Category* category,
               int productID, double weight, std::string grindType);
 
     // Getters
     double getWeight();
     std::string getGrindType();
+
+    // Actions
+    void displayDetails();
 };
 
 class Cup : public Product {
@@ -57,11 +61,31 @@ class Cup : public Product {
    public:
     // Constructor
     Cup(std::string name, double price, int availableQuantity,
-        Supplier* supplier, int capacity, Category* category, int productID,
+        Supplier* supplier, Category* category, int productID,
         std::string material);
 
     // Getters
     std::string getMaterial();
+
+    // Actions
+    void displayDetails();
+};
+
+class Machine : public Product {
+   private:
+    std::string type;
+
+   public:
+    // Constructor
+    Machine(std::string name, double price, int availableQuantity,
+            Supplier* supplier, Category* category, int productID,
+            std::string type);
+
+    // Getters
+    std::string getType();
+
+    // Actions
+    void displayDetails();
 };
 
 #endif  // PRODUCT_H
