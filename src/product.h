@@ -5,6 +5,10 @@
 
 #include "supplier.h"
 
+// * ============================
+// * Product Class Declaration
+// * ============================
+
 class Category;
 
 class Product {
@@ -32,8 +36,15 @@ class Product {
     // Actions
     void registerPurchase(int quantity);
     void orderMoreStock(int quantity);
+
+    // This is a virtual function because every derived class has different data
+    // that must be displayed so yea.
     virtual void displayDetails() = 0;
 };
+
+// * ============================
+// * Derived Classes
+// * ============================
 
 class CoffeeBag : public Product {
    private:
@@ -43,8 +54,8 @@ class CoffeeBag : public Product {
    public:
     // Constructor
     CoffeeBag(std::string name, double price, int availableQuantity,
-              Supplier* supplier, Category* category,
-              int productID, double weight, std::string grindType);
+              Supplier* supplier, Category* category, int productID,
+              double weight, std::string grindType);
 
     // Getters
     double getWeight();

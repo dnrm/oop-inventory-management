@@ -1,3 +1,10 @@
+// Inventory Management System for Small Coffee Shops
+// Created by Daniel Medina on November 2024.
+
+// This is a simple inventory management system for small coffee shops. It
+// allows the user to add, view, and delete products, categories, and suppliers.
+// The user can also register purchases and order more stock.
+
 #include <functional>
 #include <iostream>
 #include <map>
@@ -9,6 +16,10 @@
 #include "src/inventory.h"
 #include "src/product.h"
 #include "src/supplier.h"
+
+// * ============================
+// * Helper Functions
+// * ============================
 
 void printProducts(std::vector<Product*> products) {
     printf("\n========== Products ==========\n\n");
@@ -68,6 +79,13 @@ void stockManagementMenu() {
     printf("\n==============================\n");
 }
 
+// * ============================
+// * Input Functions
+// * ============================
+
+// These functions are used to get input from the user and convert it to the
+// desired type.
+
 std::string get_string(const std::string& prompt) {
     std::string line;
     std::cout << prompt;
@@ -93,6 +111,10 @@ double get_double(const std::string& prompt) {
     return value;
 }
 
+// * ============================
+// * Main Function
+// * ============================
+
 int main() {
     // Instantiate an Inventory class
     Inventory inventory;
@@ -107,23 +129,36 @@ int main() {
         new Category("Machines", "Coffee machines for brewing coffee.");
     Category* category3 =
         new Category("Cups", "Beautiful drinkware for the best coffee.");
+    Category* category4 =
+        new Category("Accessories", "Accessories for coffee brewing.");
 
-    Supplier* supplier1 = new Supplier("Five Elephant Coffee", "1234567890",
-                                       "Schwedter Straße");
+    Supplier* supplier1 =
+        new Supplier("Five Elephant Coffee", "1234567890", "Schwedter Straße");
     Supplier* supplier2 =
         new Supplier("The Barn", "0987654321", "Schönhauser Allee");
     Supplier* supplier3 =
-        new Supplier("Bonanza Coffee", "1234567890", "Adalbertstraße");
+        new Supplier("ACME Cups", "1234567890", "Adalbertstraße");
+    Supplier* supplier4 = new Supplier("La Marzzoco", "23948", "Italy");
+    Supplier* supplier5 = new Supplier("Hario", "23948", "Japan");
+    Supplier* supplier6 = new Supplier("Acaia", "23948", "USA");
+    Supplier* supplier7 = new Supplier("Slayer", "23948", "USA");
 
+    // You gotta add them categories and suppliers too
     inventory.addCategory(category1);
     inventory.addCategory(category2);
     inventory.addCategory(category3);
+    inventory.addCategory(category4);
 
     inventory.addSupplier(supplier1);
     inventory.addSupplier(supplier2);
     inventory.addSupplier(supplier3);
+    inventory.addSupplier(supplier4);
+    inventory.addSupplier(supplier5);
+    inventory.addSupplier(supplier6);
+    inventory.addSupplier(supplier7);
 
     // Define a map to store menu options and corresponding actions
+    // This is for the multi-step menu.
     std::map<int, std::function<void()>> mainActions;
     std::map<int, std::function<void()>> viewActions;
     std::map<int, std::function<void()>> addActions;
@@ -230,7 +265,7 @@ int main() {
 
     // Add actions to the add menu map
     addActions[1] = [&]() {
-        // Get product data 
+        // Get product data
         std::string name = get_string("Name: ");
         double price = get_double("Price: ");
         int availableQuantity = get_int("Available Quantity: ");
@@ -250,23 +285,32 @@ int main() {
         }
 
         // Ask for the product type to decide which class to use.
-        std::string productType = get_string("Product Type (CoffeeBag, Machine, Cup): ");
+        std::string productType =
+            get_string("Product Type (CoffeeBag, Machine, Cup): ");
 
         // Add the product to the inventory based on the type
         Supplier* supplier = &inventory.getSupplier(supplierID);
         Category* category = &inventory.getCategory(categoryID);
         Product* product = nullptr;
 
+        // Create the product based on the type
+        // of product the user said.
         if (productType == "CoffeeBag") {
             double weight = get_double("Weight: ");
             std::string grindType = get_string("Grind Type: ");
-            product = new CoffeeBag(name, price, availableQuantity, supplier, category, inventory.getAllProducts().size() + 1, weight, grindType);
+            product = new CoffeeBag(
+                name, price, availableQuantity, supplier, category,
+                inventory.getAllProducts().size() + 1, weight, grindType);
         } else if (productType == "Machine") {
             std::string type = get_string("Machine Type: ");
-            product = new Machine(name, price, availableQuantity, supplier, category, inventory.getAllProducts().size() + 1, type);
+            product =
+                new Machine(name, price, availableQuantity, supplier, category,
+                            inventory.getAllProducts().size() + 1, type);
         } else if (productType == "Cup") {
             std::string material = get_string("Material: ");
-            product = new Cup(name, price, availableQuantity, supplier, category, inventory.getAllProducts().size() + 1, material);
+            product =
+                new Cup(name, price, availableQuantity, supplier, category,
+                        inventory.getAllProducts().size() + 1, material);
         } else {
             std::cout << "Invalid product type." << std::endl;
             return;
@@ -342,6 +386,7 @@ int main() {
         }
     };
 
+    // Main loop
     while (true) {
         mainMenu();
         int option = get_int("Select an option: ");
@@ -353,8 +398,10 @@ int main() {
         // Clear the screen
         std::cout << "\033[2J\033[1;1H";
 
+        // Check if the option is valid
         auto it = mainActions.find(option);
         if (it != mainActions.end()) {
+            // Perform said option :D
             it->second();
         } else {
             std::cout << "Invalid option. Please try again." << std::endl;

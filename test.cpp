@@ -7,9 +7,9 @@
 
 void testAddProduct() {
     Inventory inventory = Inventory();
-    Supplier supplier("Test Supplier", "123456789", "Test Address", 1);
-    Category category("Test Category", "Test Description", 1);
-    Product product("Test Product", 10.0, 100, &supplier, &category, 1);
+    Supplier supplier("Test Supplier", "123456789", "Test Address");
+    Category category("Test Category", "Test Description");
+    CoffeeBag product("Test Product", 1.0, 1, &supplier, &category, 1, 1.0, "Test Grind Type");
 
     inventory.addProduct(&product);
 
@@ -22,7 +22,7 @@ void testAddProduct() {
 
 void testAddCategory() {
     Inventory inventory = Inventory();
-    Category category("Test Category", "Test Description", 1);
+    Category category("Test Category", "Test Description");
 
     inventory.addCategory(&category);
 
@@ -35,7 +35,7 @@ void testAddCategory() {
 
 void testAddSupplier() {
     Inventory inventory = Inventory();
-    Supplier supplier("Test Supplier", "123456789", "Test Address", 1);
+    Supplier supplier("Test Supplier", "123456789", "Test Address");
 
     inventory.addSupplier(&supplier);
 

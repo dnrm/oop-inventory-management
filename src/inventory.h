@@ -9,6 +9,10 @@
 #include "product.h"
 #include "supplier.h"
 
+// * ============================
+// * Inventory Class Declaration
+// * ============================
+
 class Inventory {
    protected:
     std::vector<Product*> products;
@@ -17,11 +21,9 @@ class Inventory {
 
    public:
     // Constructor
-
     Inventory();
 
     // Getters
-
     std::vector<Product*> getAllProducts();
     std::vector<Category*> getAllCategories();
     std::vector<Supplier*> getAllSuppliers();

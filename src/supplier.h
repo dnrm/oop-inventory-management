@@ -4,6 +4,10 @@
 #include <iostream>
 #include <string>
 
+// * ============================
+// * Supplier Class Declaration
+// * ============================
+
 class Supplier {
    protected:
     std::string name;

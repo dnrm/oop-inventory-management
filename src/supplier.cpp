@@ -1,10 +1,8 @@
 #include "supplier.h"
 
-// Generate a unique supplier ID
-int generateSupplierID() {
-    static int id = 0;
-    return id++;
-}
+// * ============================
+// * Supplier Class Implementation
+// * ============================
 
 // Constructor
 Supplier::Supplier(std::string name, std::string contact, std::string address)

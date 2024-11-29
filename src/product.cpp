@@ -2,6 +2,10 @@
 
 #include "category.h"
 
+// * ============================
+// * Product Class Implementation
+// * ============================
+
 // Constructor
 Product::Product(std::string name, double price, int availableQuantity,
                  Supplier* supplier, Category* category, int productID)
@@ -29,6 +33,7 @@ int Product::getProductID() { return productID; }
 void Product::registerPurchase(int quantity) {
     std::cout << "Registering purchase..." << std::endl;
 
+    // If there is not enough of a product:
     if (quantity > availableQuantity) {
         std::cout << "would you like to order " << quantity - availableQuantity
                   << " more? (y/n): ";
@@ -36,6 +41,7 @@ void Product::registerPurchase(int quantity) {
         std::getline(std::cin, answer);
 
         if (answer == "y") {
+            // Order the stock but don't forget to update the availableQuantity
             orderMoreStock(quantity - availableQuantity);
             std::cout << "\nPurchase successful." << std::endl;
             availableQuantity -= quantity;
@@ -43,6 +49,7 @@ void Product::registerPurchase(int quantity) {
             std::cout << "\nPurchase cancelled." << std::endl;
         }
     } else {
+        // If there is enough stock :D
         std::cout << "\nPurchase successful." << std::endl;
         availableQuantity -= quantity;
     }
@@ -50,7 +57,11 @@ void Product::registerPurchase(int quantity) {
 
 void Product::orderMoreStock(int quantity) { availableQuantity += quantity; }
 
-// Coffee Bag
+// * ============================
+// * CoffeeBag Class Implementation
+// * ============================
+
+// Constructor
 CoffeeBag::CoffeeBag(std::string name, double price, int availableQuantity,
                      Supplier* supplier, Category* category, int productID,
                      double weight, std::string grindType)
@@ -58,10 +69,12 @@ CoffeeBag::CoffeeBag(std::string name, double price, int availableQuantity,
       weight(weight),
       grindType(grindType) {}
 
+// Getters
 double CoffeeBag::getWeight() { return weight; }
 
 std::string CoffeeBag::getGrindType() { return grindType; }
 
+// Actions
 void CoffeeBag::displayDetails() {
     std::cout << name << "\tPrice: $" << price
               << "\tQuantity: " << availableQuantity
@@ -71,15 +84,21 @@ void CoffeeBag::displayDetails() {
               << std::endl;
 }
 
-// Cup
+// * ============================
+// * Cup Class Implementation
+// * ============================
+
+// Constructor
 Cup::Cup(std::string name, double price, int availableQuantity,
          Supplier* supplier, Category* category, int productID,
          std::string material)
     : Product(name, price, availableQuantity, supplier, category, productID),
       material(material) {}
 
+// Getters
 std::string Cup::getMaterial() { return material; }
 
+// Actions
 void Cup::displayDetails() {
     std::cout << name << "\tPrice: $" << price
               << "\tQuantity: " << availableQuantity
@@ -88,15 +107,21 @@ void Cup::displayDetails() {
               << "\tMaterial: " << material << std::endl;
 }
 
-// Machine
+// * ============================
+// * Machine Class Implementation
+// * ============================
+
+// Constructor
 Machine::Machine(std::string name, double price, int availableQuantity,
                  Supplier* supplier, Category* category, int productID,
                  std::string type)
     : Product(name, price, availableQuantity, supplier, category, productID),
       type(type) {}
 
+// Getters
 std::string Machine::getType() { return type; }
 
+// Actions
 void Machine::displayDetails() {
     std::cout << name << "\tPrice: $" << price
               << "\tQuantity: " << availableQuantity

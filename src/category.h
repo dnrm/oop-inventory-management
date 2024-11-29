@@ -7,8 +7,12 @@
 
 #include "product.h"
 
+// * ============================
+// * Category Class Declaration
+// * ============================
+
 class Category {
-   protected:
+   private:
     std::string name;
     std::string description;
     int categoryID;
@@ -20,6 +24,7 @@ class Category {
     std::string getName();
     std::string getDescription();
     int getCategoryID();
+    // Setters
     void setCategoryID(int id);
 };
 
